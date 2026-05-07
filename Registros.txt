@@ -1,0 +1,8 @@
+tk
+Magikarp;Vivo
+Psyduck;Vivo
+Poliwrath;Vivo
+Gyarados;Vivo
+Golduck;Vivo
+Ludicolo;Vivo
+Milotic;Vivo
