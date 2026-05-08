@@ -30,6 +30,7 @@ public class Pokemon {
 		this.debilitado = false;
 		this.capturado = false;
 	}
+
 	public Pokemon(Pokemon poke) {
 		this.nombre = poke.nombre;
 		this.habitat = poke.habitat;
@@ -79,5 +80,47 @@ public class Pokemon {
 
 	public void capturado() {
 		this.capturado = true;
+	}
+
+	// NOR FUE AGU PLA ELE HIE LUC VEN TIE VOL PSI BIC ROC FAN DRA ACE SIN HAD
+	public int obtenerIndiceTablaDeTipos() {
+		if (tipo.equals("Normal")) {
+			return 0;
+		} else if (tipo.equals("Fuego")) {
+			return 1;
+		} else if (tipo.equals("Agua")) {
+			return 2;
+		} else if (tipo.equals("Planta")) {
+			return 3;
+		} else if (tipo.equals("Electrico")) {
+			return 4;
+		} else if (tipo.equals("Hielo")) {
+			return 5;
+		} else if (tipo.equals("Lucha")) {
+			return 6;
+		} else if (tipo.equals("Veneno")) {
+			return 7;
+		} else if (tipo.equals("Tierra")) {
+			return 8;
+		} else if (tipo.equals("Volador")) {
+			return 9;
+		} else if (tipo.equals("Psiquico")) {
+			return 10;
+		} else if (tipo.equals("Bicho")) {
+			return 11;
+		} else if (tipo.equals("Roca")) {
+			return 12;
+		} else if (tipo.equals("Fantasma")) {
+			return 13;
+		} else if (tipo.equals("Dragon")) {
+			return 14;
+		} else if (tipo.equals("Acero")) {
+			return 15;
+		} else if (tipo.equals("Siniestro")) {
+			return 16;
+		} else if (tipo.equals("Hada")) {
+			return 17;
+		}
+		return 1;
 	}
 }

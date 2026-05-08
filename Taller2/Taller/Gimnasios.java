@@ -1,6 +1,7 @@
 package Taller;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Gimnasios {
 	// N°Gimnasio;Lider;Estado;cantPokemons;Pokemons....
@@ -24,7 +25,15 @@ public class Gimnasios {
 	public boolean isDerrotado() {
 		return derrotado;
 	}
-
+	
+	public boolean gimnasioVencido() {
+		for (Pokemon poke : pokemons) {
+			if (!poke.isDebilitado()) {
+				return false;
+			}	
+		}
+		return true;
+	}
 	public void añadirPokemon(Pokemon poke) {
 		pokemons.add(poke);
 	}
@@ -32,5 +41,12 @@ public class Gimnasios {
 	public String getLider() {
 		return lider;
 	}
-
+	public Pokemon getSiguientePokemon() {
+		for (Pokemon poke : pokemons) {
+			if (!poke.isDebilitado()) {
+				return poke;
+			}
+		}
+		return null;
+	}
 }

@@ -17,8 +17,17 @@ public class AltoMando {
 		pokemons.add(poke);
 	}
 
-	public String toString() {
-		return "AltoMando [numAltoMando=" + numAltoMando + ", nombre=" + nombre + ", pokemons=" + pokemons + "]";
+	public String getNombre() {
+		return nombre;
+	}
+
+	public Pokemon getSiguientePokemon() {
+		for (Pokemon poke : pokemons) {
+			if (!poke.isDebilitado()) {
+				return poke;
+			}
+		}
+		return null;
 	}
 
 }

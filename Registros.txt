@@ -1,8 +1,8 @@
-tk
+tk;EmmaLaArdillaRabiosa;MartinNegro
+Heracross;Vivo
+Tyranitar;Vivo
+Charizard;Vivo
+Aggron;Vivo
+Groudon;Vivo
+Reshiram;Vivo
 Magikarp;Vivo
-Psyduck;Vivo
-Poliwrath;Vivo
-Gyarados;Vivo
-Golduck;Vivo
-Ludicolo;Vivo
-Milotic;Vivo
