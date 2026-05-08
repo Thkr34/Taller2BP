@@ -107,16 +107,9 @@ public class Sistema {
 							.println("Para desafiar al Alto Mando debes haber derrotado a todos los gimnasios antes!");
 					break;
 				}
-				boolean perdiste = false;
 				for (AltoMando AM : altoMando) {
 					combatirAltoMando(AM);
-					for (Pokemon poke : equipoActual) {
-						if (!poke.isDebilitado()) {
-							perdiste = true;
-							break;
-						}
-					}
-					if (perdiste) {
+					if (perdiste()) {
 						break;
 					}
 				}

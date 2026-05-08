@@ -1,8 +1,8 @@
-tk;EmmaLaArdillaRabiosa;MartinNegro
+tk;EmmaLaArdillaRabiosa;MartinNegro;Ferran;Branco;Remi;Pruno;Dani;Maxi
 Heracross;Vivo
 Tyranitar;Vivo
-Charizard;Vivo
+Togekiss;Vivo
 Aggron;Vivo
-Groudon;Vivo
+Decidueye;Vivo
 Reshiram;Vivo
 Magikarp;Vivo
