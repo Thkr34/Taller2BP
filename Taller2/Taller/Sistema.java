@@ -82,7 +82,27 @@ public class Sistema {
 				}
 				cargarPokesHabitatX(habitatActual);
 				Pokemon pokeSpawneado = spawnearPokemon();
-				System.out.println(pokeSpawneado);
+				System.out.println("Ha aparecido un " + pokeSpawneado.getNombre() + " salvaje!");
+				accion = menuCapturar();
+				switch(accion) {
+				case(1):
+					if (pokeSpawneado.isCapturado()) {
+						System.out.println("Ya tienes este Pokemon!");
+						break;
+					} else if (equipoActual.size() < 6) {
+						equipoActual.add(pokeSpawneado);
+						pokeSpawneado.capturado();
+						System.out.println(pokeSpawneado.getNombre() + " ha sido capturado y añadido al equipo!");
+					} else if (equipoActual.size() == 6) {
+						capturados.add(pokeSpawneado);
+						pokeSpawneado.capturado();
+						System.out.println(pokeSpawneado.getNombre() + " ha sido capturado y enviado al PC!");
+					}
+					break;
+				case(2):
+					System.out.println("Corriendo de vuelta al menu principal!...");
+					break;
+				}
 				break;
 			case (3):
 				if (capturados.size() == 0 || equipoActual.size() < 6) {
@@ -106,6 +126,10 @@ public class Sistema {
 				} while (accion != 2);
 				break;
 			case (4):
+				if (equipoActual.size() == 0) {
+					System.out.println("No puedes combatir sin pokemons en tu equipo!");
+					break;
+				}
 				if (menuSiguienteGym()) {
 					break;
 				}
@@ -121,6 +145,10 @@ public class Sistema {
 				}
 				break;
 			case (5):
+				if (equipoActual.size() == 0) {
+					System.out.println("No puedes combatir sin pokemons en tu equipo!");
+					break;
+				}
 				if (perdiste()) {
 					System.out.println("todos tus pokes estan debilitados!, no puedes combatir asi!");
 					break;
@@ -855,6 +883,27 @@ public class Sistema {
 			}
 		} while (entradaValida);
 
+		return 0;
+	}
+	public static int menuCapturar() {
+		boolean entradaValida = true;
+		do {
+			try {
+				System.out
+						.print(nombre + ", que deseas hacer?\r\n" + "1) Capturar Pokemon.\r\n" + "2) Huir." + "\r\n> ");
+				int opcion = sc.nextInt();
+				sc.nextLine();
+				if (opcion > 0 && opcion < 3) {
+					entradaValida = false;
+					return opcion;
+				} else {
+					System.out.println("ingrese una opcion valida.");
+				}
+			} catch (InputMismatchException e) {
+				System.out.println("ingrese una opcion valida.");
+				sc.nextLine();
+			}
+		} while (entradaValida);
 		return 0;
 	}
 }
