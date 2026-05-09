@@ -7,9 +7,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Sistema {
+	static ArrayList<Double> porcentajeAcumulado = new ArrayList<Double>();
+	static Random rand = new Random();
 	static Scanner sc = new Scanner(System.in);
 	static String nombre;
 	static ArrayList<String> medallas = new ArrayList<String>();
@@ -19,7 +22,9 @@ public class Sistema {
 	static ArrayList<Pokemon> pokedex = new ArrayList<Pokemon>();
 	static ArrayList<Gimnasios> gyms = new ArrayList<Gimnasios>();
 	static ArrayList<AltoMando> altoMando = new ArrayList<AltoMando>();
+	static ArrayList<Pokemon> pokesEnHabitatX = new ArrayList<Pokemon>();
 	static Pokemon pokeActual;
+	static String habitatActual = null;
 
 	public static void main(String[] args) {
 		// Bastián Felipe Perines Flores
@@ -29,21 +34,29 @@ public class Sistema {
 		cargarPokemons(pokedex);
 		cargarGyms();
 		cargarAltoMando();
-		int opcion = menuPrincipal();
-		switch (opcion) {
-		case (1):
-			cargarPartida(pokedex, gyms);
-			pokeActual = equipoActual.get(0);
-			break;
-		case (2):
-			System.out.print("Ingrese Apodo:\r\n> ");
-			nombre = sc.nextLine();
-			System.out.println("Bienvenido " + nombre + "!");
-			break;
-		case (3):
-			System.out.println("bye!");
-			System.exit(0);
-		}
+		int opcion;
+		do {
+			opcion = menuPrincipal();
+			switch (opcion) {
+			case (1):
+				if (!cargarPartida(pokedex, gyms)) {
+					System.out.println("No se encontro una partida anterior! inicie una nueva :)");
+					break;
+				}
+				if (equipoActual.size() > 0) {
+					pokeActual = equipoActual.get(0);
+				}
+				break;
+			case (2):
+				System.out.print("Ingrese Apodo:\r\n> ");
+				nombre = sc.nextLine();
+				System.out.println("Bienvenido " + nombre + "!");
+				break;
+			case (3):
+				System.out.println("bye!");
+				System.exit(0);
+			}
+		} while (nombre == null);
 		int accion;
 		do {
 			accion = menuPartida();
@@ -60,6 +73,16 @@ public class Sistema {
 				}
 				break;
 			case (2):
+				int indiceHabitatActual = menuHabitats();
+				if (indiceHabitatActual == -1) {
+					System.out.println("volviendo!...");
+					break;
+				} else {
+					habitatActual = habitats.get(indiceHabitatActual);
+				}
+				cargarPokesHabitatX(habitatActual);
+				Pokemon pokeSpawneado = spawnearPokemon();
+				System.out.println(pokeSpawneado);
 				break;
 			case (3):
 				if (capturados.size() == 0 || equipoActual.size() < 6) {
@@ -119,6 +142,7 @@ public class Sistema {
 						break;
 					}
 				}
+				System.out.println("Has sido derrotado!,  volviendo al menu...");
 				break;
 			case (6):
 				for (Pokemon poke : pokedex) {
@@ -259,14 +283,13 @@ public class Sistema {
 		capturados.set(indiceCapturado, aux);
 	}
 
-	public static void cargarPartida(ArrayList<Pokemon> pokedex, ArrayList<Gimnasios> gyms) {
+	public static boolean cargarPartida(ArrayList<Pokemon> pokedex, ArrayList<Gimnasios> gyms) {
 		String linea;
 		boolean primeraLinea = false;
 		File registros = new File("Registros.txt");
 		try (Scanner leerArchivo = new Scanner(registros)) {
 			if (!leerArchivo.hasNextLine()) {
-				System.out.println("no se encontro una partida anterior, inicie una nueva.");
-				return;
+				return false;
 			}
 			do {
 				linea = leerArchivo.nextLine();
@@ -324,9 +347,9 @@ public class Sistema {
 					primeraLinea = true;
 				}
 			} while (leerArchivo.hasNextLine());
-			System.out.println("la partida se cargo correctamente!");
+			return true;
 		} catch (FileNotFoundException e) {
-			System.out.println("no se encontro una partida anterior.");
+			return false;
 		}
 	}
 
@@ -698,7 +721,7 @@ public class Sistema {
 	public static boolean menuSiguienteGym() {
 		System.out.println("A cual lider deseas desafiar?:\n");
 		for (int i = 0; i < gyms.size() + 1; i++) {
-			if (i == gyms.size()){
+			if (i == gyms.size()) {
 				System.out.println((i + 1) + ") Volver al menu");
 				break;
 			}
@@ -715,7 +738,7 @@ public class Sistema {
 				System.out.print("> ");
 				opcion = sc.nextInt();
 				sc.nextLine();
-				if (opcion > 0 && opcion < (gyms.size()+1)) {
+				if (opcion > 0 && opcion < (gyms.size() + 2)) {
 					entradaValida = false;
 				} else {
 					System.out.println("ingrese una opcion valida.");
@@ -725,15 +748,16 @@ public class Sistema {
 				sc.nextLine();
 			}
 		} while (entradaValida);
-		if (opcion == (gyms.size()+1)) {
+		if (opcion == (gyms.size() + 1)) {
 			return true;
-		} else if ((retarGym() != gyms.get(opcion-1))&&(gyms.get(opcion-1).isDerrotado())) {
+		} else if ((retarGym() != gyms.get(opcion - 1)) && (gyms.get(opcion - 1).isDerrotado())) {
 			System.out.println("Ya derrotaste este gimnasio!");
 			return true;
-		} else if (((retarGym() != gyms.get(opcion-1))&&(!gyms.get(opcion-1).isDerrotado()))) {
-			System.out.println("Debes derrotar a los gyms anteriores para poder desafiar a " + gyms.get(opcion-1).getLider() +"!");
+		} else if (((retarGym() != gyms.get(opcion - 1)) && (!gyms.get(opcion - 1).isDerrotado()))) {
+			System.out.println("Debes derrotar a los gyms anteriores para poder desafiar a "
+					+ gyms.get(opcion - 1).getLider() + "!");
 			return true;
-		} else if (retarGym() == gyms.get(opcion-1)) {
+		} else if (retarGym() == gyms.get(opcion - 1)) {
 			return false;
 		}
 		return true;
@@ -763,5 +787,74 @@ public class Sistema {
 				{ 1.0, 0.5, 1.0, 1.0, 1.0, 1.0, 2.0, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 0.5, 2.0, 1.0 } // HADA
 		};
 		return EFECTIVIDAD[pokeUsuario.obtenerIndiceTablaDeTipos()][pokeEnemigo.obtenerIndiceTablaDeTipos()];
+	}
+
+	public static void cargarPokesHabitatX(String habitat) {
+		pokesEnHabitatX.clear();
+		for (Pokemon poke : pokedex) {
+			if (poke.getHabitat().equals(habitatActual)) {
+				pokesEnHabitatX.add(poke);
+			}
+		}
+	}
+
+	public static Pokemon spawnearPokemon() {
+		for (int i = 0; i < pokesEnHabitatX.size(); i++) {
+			if (i == 0) {
+				porcentajeAcumulado.add(pokesEnHabitatX.get(0).getPorcentajeAparicion());
+			} else {
+				porcentajeAcumulado
+						.add(pokesEnHabitatX.get(i).getPorcentajeAparicion() + porcentajeAcumulado.get(i - 1));
+			}
+		}
+		double num = rand.nextDouble(0, porcentajeAcumulado.get(porcentajeAcumulado.size()-1));
+
+		for (int i = 0; i < pokesEnHabitatX.size(); i++) {
+			if (i == 0) {
+				if (num < porcentajeAcumulado.get(0)) {
+					return pokesEnHabitatX.get(0);
+				}
+				continue;
+			}
+			if (porcentajeAcumulado.get(i - 1) < num
+					&& porcentajeAcumulado.get(i) > num) {
+				return pokesEnHabitatX.get(i);
+			}
+		}
+		return null;
+	}
+
+	public static int menuHabitats() {
+		int opcion;
+		boolean entradaValida = true;
+		System.out.println("A cual zona deseas salir a capturar?:\n");
+		for (int i = 0; i < habitats.size() + 1; i++) {
+			System.out.println((i + 1) + ") " + habitats.get(i));
+			if (i + 1 == habitats.size()) {
+				System.out.println((i + 2) + ") salir");
+				break;
+			}
+		}
+		do {
+			try {
+				System.out.print("> ");
+				opcion = sc.nextInt();
+				sc.nextLine();
+				if (opcion > 0 && opcion < (habitats.size() + 2)) {
+					entradaValida = false;
+					if (opcion == habitats.size() + 1) {
+						return -1;
+					}
+					return opcion - 1;
+				} else {
+					System.out.println("ingrese una opcion valida.");
+				}
+			} catch (InputMismatchException e) {
+				System.out.println("ingrese una opcion valida.");
+				sc.nextLine();
+			}
+		} while (entradaValida);
+
+		return 0;
 	}
 }

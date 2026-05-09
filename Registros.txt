@@ -1,8 +1,1 @@
-tk;EmmaLaArdillaRabiosa;MartinNegro;Ferran;Branco;Remi;Pruno;Dani;Maxi
-Heracross;Vivo
-Tyranitar;Vivo
-Togekiss;Vivo
-Aggron;Vivo
-Decidueye;Vivo
-Reshiram;Vivo
-Magikarp;Vivo
+thkr

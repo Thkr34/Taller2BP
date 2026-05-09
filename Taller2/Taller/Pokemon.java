@@ -58,6 +58,12 @@ public class Pokemon {
 		return nombre;
 	}
 
+	public String getHabitat() {
+		return habitat;
+	}
+	public double getPorcentajeAparicion() {
+		return porcentajeAparicion;
+	}
 	public String getTipo() {
 		return tipo;
 	}
