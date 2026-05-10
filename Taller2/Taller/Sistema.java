@@ -13,27 +13,27 @@ import java.util.Scanner;
 public class Sistema {
 	// listas y demas que se usan en varias funciones, mas que nada para no ponerlas
 	// de parametros.
-	static ArrayList<Double> porcentajeAcumulado = new ArrayList<Double>();
-	static Random rand = new Random();
-	static Scanner sc = new Scanner(System.in);
-	static String nombre;
-	static ArrayList<String> medallas = new ArrayList<String>();
-	static ArrayList<Pokemon> capturados = new ArrayList<Pokemon>();
-	static ArrayList<Pokemon> equipoActual = new ArrayList<Pokemon>();
-	static ArrayList<String> habitats = new ArrayList<String>();
-	static ArrayList<Pokemon> pokedex = new ArrayList<Pokemon>();
-	static ArrayList<Gimnasios> gyms = new ArrayList<Gimnasios>();
-	static ArrayList<AltoMando> altoMando = new ArrayList<AltoMando>();
-	static ArrayList<Pokemon> pokesEnHabitatX = new ArrayList<Pokemon>();
-	static Pokemon pokeActual;
-	static String habitatActual = null;
+	private static ArrayList<Double> porcentajeAcumulado = new ArrayList<Double>();
+	private static Random rand = new Random();
+	private static Scanner sc = new Scanner(System.in);
+	private static String nombre;
+	private static ArrayList<String> medallas = new ArrayList<String>();
+	private static ArrayList<Pokemon> capturados = new ArrayList<Pokemon>();
+	private static ArrayList<Pokemon> equipoActual = new ArrayList<Pokemon>();
+	private static ArrayList<String> habitats = new ArrayList<String>();
+	private static ArrayList<Pokemon> pokedex = new ArrayList<Pokemon>();
+	private static ArrayList<Gimnasios> gyms = new ArrayList<Gimnasios>();
+	private static ArrayList<AltoMando> altoMando = new ArrayList<AltoMando>();
+	private static ArrayList<Pokemon> pokesEnHabitatX = new ArrayList<Pokemon>();
+	private static Pokemon pokeActual;
+	private static String habitatActual = null;
 
 	public static void main(String[] args) {
 		// Bastián Felipe Perines Flores
 		// 22.386.978-5
 		// ICCI
-		cargarHabitats(habitats);
-		cargarPokemons(pokedex);
+		cargarHabitats();
+		cargarPokemons();
 		cargarGyms();
 		cargarAltoMando();
 		int opcion;
@@ -45,7 +45,7 @@ public class Sistema {
 			opcion = menuPrincipal();
 			switch (opcion) {
 			case (1):
-				if (!cargarPartida(pokedex, gyms)) {
+				if (!cargarPartida()) {
 					System.out.println("No se encontro una partida anterior! inicie una nueva :)");
 					break;
 				}
@@ -375,7 +375,7 @@ public class Sistema {
 	// ingresado), los estados de los gimnasios (derrotados o no dependiendo si
 	// tienes o no sus medallas), y finalmente añadiendo los pokemons guardados en
 	// sus respectivas listas (mayores detalles dados anteriormente).
-	public static boolean cargarPartida(ArrayList<Pokemon> pokedex, ArrayList<Gimnasios> gyms) {
+	public static boolean cargarPartida() {
 		String linea;
 		boolean primeraLinea = false;
 		File registros = new File("Registros.txt");
@@ -494,13 +494,13 @@ public class Sistema {
 	}
 
 	// leer y guarda los habitats leidos en el archivo "Habitats.txt".
-	public static void cargarHabitats(ArrayList<String> lista) {
+	public static void cargarHabitats() {
 		String linea;
 		File archivo = new File("Habitats.txt");
 		try (Scanner leerHabitats = new Scanner(archivo)) {
 			while (leerHabitats.hasNextLine()) {
 				linea = leerHabitats.nextLine();
-				lista.add(linea);
+				habitats.add(linea);
 			}
 			System.out.println("los habitats se cargaron correctamente!");
 		} catch (FileNotFoundException e) {
@@ -511,7 +511,7 @@ public class Sistema {
 
 	// cargarPokemons, lee el archivo "Pokedex.txt", creando y guardando cada uno en
 	// la lista pokedex.
-	public static void cargarPokemons(ArrayList<Pokemon> lista) {
+	public static void cargarPokemons() {
 		String linea;
 		File archivo = new File("Pokedex.txt");
 		try (Scanner leerPokemons = new Scanner(archivo)) {
@@ -529,7 +529,7 @@ public class Sistema {
 				int defensaEspecial = Integer.parseInt(partes[7]);
 				int velocidad = Integer.parseInt(partes[8]);
 				String tipo = partes[9];
-				lista.add(new Pokemon(nombre, habitat, porcentajeAparicion, vida, ataque, defensa, ataqueEspecial,
+				pokedex.add(new Pokemon(nombre, habitat, porcentajeAparicion, vida, ataque, defensa, ataqueEspecial,
 						defensaEspecial, velocidad, tipo));
 			}
 			System.out.println("se cargo correctamente la pokedex!");
